@@ -1,0 +1,34 @@
+﻿{% extends 'main.html' %}
+
+{% block article %}
+
+<h4>{{ article.article_date }}</h4>
+<h2>{% autoescape off%}{{ article.article_title }}{% endautoescape %}</h2>
+<div>
+{% if article.article_image %}
+    <p> <img src="{{MEDIA_URL}}{{ article.article_image.url}}"></p>
+    {% endif %}
+</div>
+<p>{% autoescape off%}{{ article.article_text }}{% endautoescape %}</p>
+<hr>
+<div class="large-offset-1 large-8 columns">
+<p>Комментарии:</p>
+<div height="1" style="border-bottom: 1px dotted #000033; "></div>
+    {%  for comment in comments %}
+    <p>{{ comment.comments_text }}</p>
+    <p align="right"> {{ comment.comments_author.username}} -{{comment.comments_date}}</p>
+<div height="1" style="border-bottom: 1px dotted #000033; "></div>
+
+    {% endfor %}
+    {% if username %}
+    <form action="/articles/addcomment/{{ article.id }}/" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" class="button" value="Добавить комментарий">
+    </form>
+    {% endif %}
+
+ </div>
+{%  endblock %}
+
+    
